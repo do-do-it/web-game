@@ -1,0 +1,39 @@
+@import '~@style/mobile/index.less';
+
+#app {
+  position: relative;
+  min-height: 100%;
+}
+
+.left-view {
+  position: absolute;
+  left: 20px;
+  top: 20px;
+  box-sizing: border-box;
+  .wd(200, 400);
+  background-color: #eee;
+
+  & > div {
+    float: left;
+    .wd(20, 20);
+    box-sizing: border-box;
+    
+    &.default {
+      border: 1px solid #fff;
+    }
+
+    &.alive {
+      border: 1px solid @primary;
+      background-color: @primary;
+    }
+  }
+}
+
+.right-view {
+  position: absolute;
+  right: 20px;
+  top: 20px;
+  box-sizing: border-box;
+  .wd(100, 400);
+  background-color: #eee;
+}
