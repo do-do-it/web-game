@@ -32,8 +32,8 @@ class Home extends React.Component {
       <List renderHeader={() => this.state.title} className='list'>
         {
           listData.map(item => (
-            <a href={item.link}>
-              <Item arrow="horizontal" key={item.id}>{item.name}
+            <a href={item.link} key={item.id}>
+              <Item arrow="horizontal">{item.name}
                 <Brief>{item.brief}</Brief>
               </Item>
             </a>

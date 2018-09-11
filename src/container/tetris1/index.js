@@ -1,82 +1,83 @@
 import toolkit from './toolkit'
+import Tetries from './tetries'
 import './index.less'
-
-class Tetris {
-  constructor(type) {
-    return this.createBlock(type)
-  }
-  createBlock(type) {
-    let block
-    switch(type) {
-      case 1:
-        block = [
-          [0, 0, 0, 0],
-          [1, 1, 1, 1],
-          [0, 0, 0, 0],
-          [0, 0, 0, 0]
-        ]
-        break;
-      case 2:
-        block = [
-          [0, 1, 0, 0],
-          [0, 1, 0, 0],
-          [0, 1, 0, 0],
-          [0, 1, 0, 0]
-        ]
-        break;
-    }
-    return block
-  }
-}
 
 class Game {
   constructor() {
+    this.col = 10
+    this.row = 20
+    this.gameData = [
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    ]
+    this.gameDivs = []
+    this.className = ['none', 'fixed', 'alive']
+    this.next = new Tetries(1, 1)
+    this.current = new Tetries(1, 2)
+    this.nextDivs = []
     this.init()
   }
   init() {
-    this.appContainer = document.getElementById('app')
-    this.data = toolkit.createTetrisArray(20, 10, 0)
-    console.log(this.data)
-    this.createBlocks()
-    this.addBlocks()
-    this.changeBlocks()
+    this.gameDivs = this.initView('game-view', this.gameData)
+    this.nextDivs = this.initView('next-view', this.next.data[this.next.dir])
+    // setInterval(() => {
+    //   const data = this.current.data[this.current.dir]
+    //   const origin = this.current.origin
+    //   const gameData = JSON.parse(JSON.stringify(this.gameData))
+    //   for (let i = 0; i < data.length; i++) {
+    //     for (let j =0; j < data[0].length; j++) {
+    //       gameData[i + origin.x][j + origin.y] = data[i][j]
+    //     }
+    //   }
+    //   console.log(gameData)
+    //   this.refreshDivs(this.gameDivs, gameData)
+    //   this.current.origin.x += 1
+    //   if (this.current.origin.x >= this.row - 4) {
+    //     this.current.origin.x = this.row - 4
+    //   }
+    // }, 200)
   }
-  createBlocks() {
-    const leftView = document.createElement('div')
-    leftView.className = 'left-view'
-    this.leftView = leftView
-    this.blocks = toolkit.createTetrisArray()
-    for (let i = 0; i < this.data.length; i++) {
-      const element = this.data[i];
-      for (let j = 0; j < element.length; j++) {
-        const item = element[j];
+  initView(containerName, data) {
+    const blockdDivs = []
+    const container = document.createElement('div')
+    container.className = containerName
+    for (let i = 0; i < data.length; i++) {
+      const divs = []
+      for (let j = 0; j < data[0].length; j++) {
         const node = document.createElement('div')
-        node.className = 'default'
-        this.leftView.appendChild(node)
-        this.blocks[i][j] = node
+        node.className = this.className[data[i][j]]
+        container.appendChild(node)
+        divs.push(node)
+      }
+      blockdDivs.push(divs)
+    }
+    document.querySelector('body').appendChild(container)
+    return blockdDivs
+  }
+  refreshDivs(divs, data) {
+    for (let i = 0; i < data.length; i++) {
+      for (let j = 0; j < data[0].length; j++) {
+        divs[i][j].className = this.className[data[i][j]]
       }
     }
-    this.appContainer.appendChild(this.leftView)
-  }
-  changeBlocks() {
-    for (let i = 0; i < this.data.length; i++) {
-      const element = this.data[i];
-      for (let j = 0; j < element.length; j++) {
-        const item = element[j];
-        this.blocks[i][j].className = item === 1 ? 'alive' : 'default'
-      }
-    }
-  }
-  addBlocks() {
-    const blocks = new Tetris(1)
-    for (let i = 0; i < 4; i++) {
-      for (let j = 0; j < 4; j++) {
-        this.data[i][j+3] = blocks[i][j]        
-      }
-    }
-  }
-  createBlock() {
-    const blocks = toolkit.createTetrisArray(4, 4, 1)
   }
 }
 

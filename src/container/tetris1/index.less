@@ -1,39 +1,45 @@
 @import '~@style/mobile/index.less';
 
-#app {
+@bg: #eee;
+
+body {
   position: relative;
-  min-height: 100%;
 }
 
-.left-view {
+.game-view {
   position: absolute;
   left: 20px;
   top: 20px;
-  box-sizing: border-box;
   .wd(200, 400);
-  background-color: #eee;
-
-  & > div {
-    float: left;
-    .wd(20, 20);
-    box-sizing: border-box;
-    
-    &.default {
-      border: 1px solid #fff;
-    }
-
-    &.alive {
-      border: 1px solid @primary;
-      background-color: @primary;
-    }
-  }
+  background-color: @bg;
+  border-left: 1px solid @primary;
+  border-bottom: 1px solid @primary;
+  border-right: 1px solid @primary;
 }
 
-.right-view {
+.next-view {
   position: absolute;
   right: 20px;
   top: 20px;
+  .wd(80, 80);
+  background-color: @bg;
+}
+
+.none, .fixed, .alive {
+  float: left;
+  .wd(20, 20);
   box-sizing: border-box;
-  .wd(100, 400);
-  background-color: #eee;
+}
+
+.none {
+  background-color: @bg;
+}
+
+.fixed {
+  background-color: #aaa;
+}
+
+.alive {
+  background-color: @primary;
+  border: 1px solid @primary-light;
 }
