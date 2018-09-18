@@ -30,30 +30,77 @@ class Game {
     ]
     this.gameDivs = []
     this.className = ['none', 'fixed', 'alive']
-    this.next = new Tetries(1, 1)
-    this.current = new Tetries(1, 2)
+    this.next = this.createTetries()
+    this.current = this.createTetries()
     this.nextDivs = []
     this.init()
   }
   init() {
     this.gameDivs = this.initView('game-view', this.gameData)
-    this.nextDivs = this.initView('next-view', this.next.data[this.next.dir])
-    // setInterval(() => {
-    //   const data = this.current.data[this.current.dir]
-    //   const origin = this.current.origin
-    //   const gameData = JSON.parse(JSON.stringify(this.gameData))
-    //   for (let i = 0; i < data.length; i++) {
-    //     for (let j =0; j < data[0].length; j++) {
-    //       gameData[i + origin.x][j + origin.y] = data[i][j]
-    //     }
-    //   }
-    //   console.log(gameData)
-    //   this.refreshDivs(this.gameDivs, gameData)
-    //   this.current.origin.x += 1
-    //   if (this.current.origin.x >= this.row - 4) {
-    //     this.current.origin.x = this.row - 4
-    //   }
-    // }, 200)
+    this.nextDivs = this.initView('next-view', this.next.data())
+    this.initController()
+    this.gameMove()
+  }
+  gameMove() {
+    const data = this.current.data()
+    const origin = this.current.origin
+    const gameData = JSON.parse(JSON.stringify(this.gameData))
+    const row = gameData.length
+    for (let i = 0; i < data.length; i++) {
+      if (i + origin.x >= row) {
+        continue
+      }
+      for (let j =0; j < data[0].length; j++) {
+        gameData[i + origin.x][j + origin.y] = data[i][j]
+      }
+    }
+    this.refreshDivs(this.gameDivs, gameData)
+  }
+  createTetries() {
+    const type = this.ranNum(1, 6)
+    const dir = this.ranNum(0, 3)
+    return new Tetries(type, dir)
+  }
+  ranNum(min, max) {
+    return Math.ceil(Math.random()*(max - min)) + min
+  }
+  initController() {
+    const container = document.createElement('div')
+    container.className = 'controller-view'
+    const dirs = ['left', 'down', 'right', 'up']
+    for (let i = 0; i < dirs.length; i++) {
+      const node = document.createElement('div')
+      node.id = dirs[i]
+      node.className = dirs[i]
+      container.appendChild(node)
+    }
+    document.querySelector('body').appendChild(container)
+
+    document.getElementById('left').addEventListener('click', () => {
+      if (this.current.left(this.gameData)) {
+        this.gameMove()
+      }
+    }, false)
+    document.getElementById('down').addEventListener('click', () => {
+      if (this.current.down(this.gameData)) {
+        this.gameMove()
+      }
+    }, false)
+    document.getElementById('right').addEventListener('click', () => {
+      if (this.current.right(this.gameData)) {
+        this.gameMove()
+      }
+    }, false)
+    document.getElementById('up').addEventListener('click', () => {
+      this.current.up()
+      this.gameMove()
+    }, false)
+    window.addEventListener('keyup', (event) => {
+      if (event.keyCode === 37 && this.current.left(this.gameData)) this.gameMove()
+      if (event.keyCode === 38 && this.current.up()) this.gameMove()
+      if (event.keyCode === 39 && this.current.right(this.gameData)) this.gameMove()
+      if (event.keyCode === 40 && this.current.down(this.gameData)) this.gameMove()
+    }, false)
   }
   initView(containerName, data) {
     const blockdDivs = []

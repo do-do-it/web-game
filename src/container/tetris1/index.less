@@ -43,3 +43,41 @@ body {
   background-color: @primary;
   border: 1px solid @primary-light;
 }
+
+@btn-size: 20;
+
+.controller-view {
+  position: absolute;
+  right: 20px;
+  top: 120px;
+  .wd(80, 80);
+  background-color: @bg;
+
+  .left, .down, .right, .up {
+    position: absolute;
+    .wd(@btn-size, @btn-size);
+    background-color: @primary;
+    color: #fff;
+    font-size: 14px;
+  }
+
+  .left {
+    top: (80 - @btn-size) / 2 * 1px;
+    left: 0;
+  }
+
+  .right {
+    top: (80 - @btn-size) / 2 * 1px;
+    right: 0;
+  }
+
+  .down {
+    left: (80 - @btn-size) / 2 * 1px;
+    bottom: 0;
+  }
+
+  .up {
+    left: (80 - @btn-size) / 2 * 1px;
+    top: 0;
+  }
+}
