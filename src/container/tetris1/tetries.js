@@ -2,7 +2,7 @@
  * @Author: Zhang Min 
  * @Date: 2018-09-11 08:15:40 
  * @Last Modified by: Zhang Min
- * @Last Modified time: 2018-09-13 09:06:58
+ * @Last Modified time: 2018-09-19 09:35:16
  */
 
 
@@ -224,15 +224,19 @@ export default class Tetris {
     const col = this.origin.y - 1
     const data = this.data()
     const size = data.length
-    const maxCol = gameData[0].length
     if (col < size * -1) {
       return false
     }
-    for (let i = size - 1; i >= 0; i--) {
+    for (let i = 0; i < size; i++) {
+      let canLeft = true
       for (let j = 0; j < size; j++) {
-        if (data[j][i] === 2 && gameData[row + j][col + i] === 1) {
-          return false
+        if (data[j][i] === 2 && (gameData[row + j][col + i] === 1 || col + i < 0)) {
+          canLeft = false
+          break
         }
+      }
+      if (!canLeft) {
+        return false
       }
     }
     return true
@@ -240,11 +244,21 @@ export default class Tetris {
   canRight(gameData) {
     const row = this.origin.x
     const col = this.origin.y + 1
+    console.log(col)
     const data = this.data()
     const size = data.length
-    const maxCol = gameData[0].length
-    if (col > maxCol - size + 1) {
-      return false
+    const maxLen = gameData[0].length
+    for (let i = size - 1; i >= 0; i--) {
+      let canLeft = true
+      for (let j = 0; j < size; j++) {
+        if (data[j][i] === 2 && (gameData[row + j][col + i] && gameData[row + j][col + i] === 1 || col + i > maxLen)) {
+          canLeft = false
+          break
+        }
+      }
+      if (!canLeft) {
+        return false
+      }
     }
     return true
   }

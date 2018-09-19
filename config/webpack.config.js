@@ -13,6 +13,12 @@ const config = {
     filename: '[name].js',
     publicPath: '/'
   },
+  devServer: {
+    contentBase: path.resolve(__dirname, '../dist'),
+    port: 8001,
+    hot: true,
+    host: '192.168.64.68'
+  },
   module: {
     rules: [
       {
@@ -48,7 +54,8 @@ const config = {
     ]
   },
   plugins: [
-    new cleanwebpackplugin(path.resolve(__dirname, '../dist'))
+    new cleanwebpackplugin(path.resolve(__dirname, '../dist')),
+    new webpack.HotModuleReplacementPlugin()
   ].concat(toolkit.pages()),
   resolve: {
     extensions: ['.js','.jsx', '.less'],
