@@ -1,30 +1,22 @@
-const path = require('path')
 const webpack = require('webpack')
-const htmlwebpackplugin = require('html-webpack-plugin')
-const cleanwebpackplugin = require('clean-webpack-plugin')
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+const baseConfig = require('./webpack.base.config')
+const merge = require('webpack-merge')
+const os = require('os')
 
-const toolkit = require('./toolkit')
-
-const config = {
-  mode: 'development',
-  entry: toolkit.entries(),
+const config = merge(baseConfig, {
+  mode: 'production',
   output: {
-    path: path.resolve(__dirname, '../dist'),
-    filename: '[name].js',
+    filename: '[name].[contenthash:8].js',
     publicPath: '/'
   },
   module: {
     rules: [
       {
-        test: /\.js$/,
-        exclude: /node_modules/,
-        use: 'babel-loader'
-      },
-      {
-        test: /\.less$/,
+        test: /\.(less|css)$/,
         use: [
           {
-            loader: 'style-loader'
+            loader: MiniCssExtractPlugin.loader
           },
           {
             loader: 'css-loader'
@@ -33,23 +25,18 @@ const config = {
             loader: 'less-loader'
           }
         ]
-      },
-      {
-        test: /\.css$/,
-        use: [
-          {
-            loader: 'style-loader'
-          },
-          {
-            loader: 'css-loader'
-          }
-        ]
       }
     ]
   },
   plugins: [
-    new cleanwebpackplugin(path.resolve(__dirname, '../dist'))
-  ].concat(toolkit.pages()),
-}
+    new MiniCssExtractPlugin({
+      filename: "[name].[contenthash:8].css",
+      chunkFilename: "[id].css"
+    }),
+    new webpack.BannerPlugin({
+      banner: `built by ${os.hostname()} at ${(new Date()).toLocaleString()}`
+    })
+  ]
+})
 
 module.exports = config

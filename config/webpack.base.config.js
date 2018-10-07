@@ -1,12 +1,8 @@
 const path = require('path')
-const webpack = require('webpack')
-const htmlwebpackplugin = require('html-webpack-plugin')
 const cleanwebpackplugin = require('clean-webpack-plugin')
-
 const toolkit = require('./toolkit')
 
 const config = {
-  mode: 'development',
   entry: toolkit.entries(),
   output: {
     path: path.resolve(__dirname, '../dist'),
@@ -19,37 +15,24 @@ const config = {
         test: /\.js$/,
         exclude: /node_modules/,
         use: 'babel-loader'
-      },
-      {
-        test: /\.less$/,
-        use: [
-          {
-            loader: 'style-loader'
-          },
-          {
-            loader: 'css-loader'
-          },
-          {
-            loader: 'less-loader'
-          }
-        ]
-      },
-      {
-        test: /\.css$/,
-        use: [
-          {
-            loader: 'style-loader'
-          },
-          {
-            loader: 'css-loader'
-          }
-        ]
       }
     ]
   },
   plugins: [
-    new cleanwebpackplugin(path.resolve(__dirname, '../dist'))
+    new cleanwebpackplugin(['dist'], {
+      root: path.resolve(__dirname, '../'),
+      verbose: false,
+      dry: false
+    })
   ].concat(toolkit.pages()),
+  resolve: {
+    extensions: ['.js','.jsx', '.less'],
+    alias: {
+      'src': path.resolve(__dirname, '../src'),
+      'style': path.resolve(__dirname, '../src/components/style'),
+      'layout': path.resolve(__dirname, '../src/components/layout')
+    }
+  }
 }
 
 module.exports = config

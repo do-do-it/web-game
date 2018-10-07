@@ -1,8 +1,10 @@
+import { max } from "moment";
+
 /*
  * @Author: Zhang Min 
  * @Date: 2018-09-11 08:15:40 
  * @Last Modified by: Zhang Min
- * @Last Modified time: 2018-09-19 09:35:16
+ * @Last Modified time: 2018-09-22 09:22:50
  */
 
 
@@ -215,8 +217,33 @@ export default class Tetris {
     }
     return false
   }
-  up() {
-    this.dir++
+  up(gameData) {
+    if (this.canUp(gameData)) {
+      this.dir++
+      return true
+    }
+    return false
+  }
+  canUp(gameData) {
+    const row = this.origin.x
+    const col = this.origin.y
+    const dir = this.dir + 1
+    const data = this._data[dir % 4]
+    const size = data.length
+    const maxRow = gameData.length
+    const maxCol = gameData[0].length
+    let flag = true
+    for (let i = 0; i < size; i++) {
+      for (let j = 0; j < size; j++) {
+        if (data[j][i] === 2 && (gameData[row + j][col + i] === undefined || gameData[row + j][col + i] === 1)) {
+          flag = false
+          break
+        }
+      }
+      if (!flag) {
+        return false
+      }
+    }
     return true
   }
   canLeft(gameData) {
@@ -244,14 +271,13 @@ export default class Tetris {
   canRight(gameData) {
     const row = this.origin.x
     const col = this.origin.y + 1
-    console.log(col)
     const data = this.data()
     const size = data.length
     const maxLen = gameData[0].length
     for (let i = size - 1; i >= 0; i--) {
       let canLeft = true
       for (let j = 0; j < size; j++) {
-        if (data[j][i] === 2 && (gameData[row + j][col + i] && gameData[row + j][col + i] === 1 || col + i > maxLen)) {
+        if (data[j][i] === 2 && (gameData[row + j][col + i] && gameData[row + j][col + i] === 1 || col + i >= maxLen)) {
           canLeft = false
           break
         }

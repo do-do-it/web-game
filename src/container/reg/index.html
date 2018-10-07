@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <%- include('../../components/layout/mobile-head.html') %>
+  <title>reg</title>
+</head>
+
+<body>
+  <div id="app"></div>
+  <script id="tpl" type="text/template">
+    <div>
+      <div>name: {{this.name}}</div>
+      {{ if(this.age) { }}
+      <div>age: {{this.age}}</div>
+      {{ } }}
+      <div>sex: {{ this.sex }}</div>
+    </div>
+  </script>
+</body>
+
+</html>

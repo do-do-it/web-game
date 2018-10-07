@@ -1,4 +1,4 @@
-@import '~@style/mobile/index.less';
+@import '~style/mobile/index.less';
 
 @bg: #eee;
 
@@ -37,6 +37,7 @@ body {
 
 .fixed {
   background-color: #aaa;
+  border: 1px solid #fff;
 }
 
 .alive {
@@ -44,16 +45,24 @@ body {
   border: 1px solid @primary-light;
 }
 
-@btn-size: 20;
+.show-view {
+  position: absolute;
+  right: 20px;
+  top: 120px;
+  font-size: 16px;
+}
+
+@btn-size: 30;
+@btn-view: 100;
 
 .controller-view {
   position: absolute;
   right: 20px;
-  top: 120px;
-  .wd(80, 80);
+  top: 320px;
+  .wd(@btn-view, @btn-view);
   background-color: @bg;
 
-  .left, .down, .right, .up {
+  .left, .down, .right, .up, .fast {
     position: absolute;
     .wd(@btn-size, @btn-size);
     background-color: @primary;
@@ -62,22 +71,28 @@ body {
   }
 
   .left {
-    top: (80 - @btn-size) / 2 * 1px;
+    top: (@btn-view - @btn-size) / 2 * 1px;
     left: 0;
   }
 
   .right {
-    top: (80 - @btn-size) / 2 * 1px;
+    top: (@btn-view - @btn-size) / 2 * 1px;
     right: 0;
   }
 
   .down {
-    left: (80 - @btn-size) / 2 * 1px;
+    left: (@btn-view - @btn-size) / 2 * 1px;
     bottom: 0;
   }
 
   .up {
-    left: (80 - @btn-size) / 2 * 1px;
+    left: (@btn-view - @btn-size) / 2 * 1px;
     top: 0;
+  }
+
+  .fast {
+    left: (@btn-view - @btn-size) / 2 * 1px;
+    top: (@btn-view - @btn-size) / 2 * 1px;
+    background-color: red;
   }
 }

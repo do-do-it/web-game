@@ -1,27 +1,14 @@
-const path = require('path')
 const webpack = require('webpack')
-const htmlwebpackplugin = require('html-webpack-plugin')
-const cleanwebpackplugin = require('clean-webpack-plugin')
+const path = require('path')
+const baseConfig = require('./webpack.base.config')
+const merge = require('webpack-merge')
 
-const toolkit = require('./toolkit')
-
-const config = {
+const config = merge(baseConfig, {
   mode: 'development',
-  entry: toolkit.entries(),
-  output: {
-    path: path.resolve(__dirname, '../dist'),
-    filename: '[name].js',
-    publicPath: '/'
-  },
   module: {
     rules: [
       {
-        test: /\.js$/,
-        exclude: /node_modules/,
-        use: 'babel-loader'
-      },
-      {
-        test: /\.less$/,
+        test: /\.(less|css)$/,
         use: [
           {
             loader: 'style-loader'
@@ -33,23 +20,18 @@ const config = {
             loader: 'less-loader'
           }
         ]
-      },
-      {
-        test: /\.css$/,
-        use: [
-          {
-            loader: 'style-loader'
-          },
-          {
-            loader: 'css-loader'
-          }
-        ]
       }
     ]
   },
   plugins: [
-    new cleanwebpackplugin(path.resolve(__dirname, '../dist'))
-  ].concat(toolkit.pages()),
-}
+    new webpack.HotModuleReplacementPlugin()
+  ],
+  devServer: {
+    contentBase: path.resolve(__dirname, '../dist'),
+    port: 8001,
+    hot: true,
+    host: 'localhost'
+  }
+})
 
 module.exports = config
