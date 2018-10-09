@@ -1,18 +1,28 @@
 import Ant from 'src/libs/ant'
 import './index.less'
 
-const easeIn = (x) => {
-  return x ** 2
+const easeIn = (p, t, b, c, d) => {
+  const a = 1
+  const w = 2 * Math.PI / t
+  const φ = 0
+  const h = 10
+  const x = p * c
+  const y = a * Math.sin(w * x + φ) + h
+  return y
 }
 
-const shake = (x, t, b, c, d) => {
-  if (x < 0.6) {
-    return (x / 0.6) ** 2
+const shake = (p, t, b, c, d) => {
+  if (p < 0.6) {
+    return (p / 0.6) ** 2
   } else {
-    return Math.sin((x - 0.6) * ((3 * Math.PI) / 0.4)) * 0.2 + 1
+    return Math.sin((p - 0.6) * ((3 * Math.PI) / 0.4)) * 0.2 + 1
   }
 }
 
-Ant(0, 100, 1000, value => {
-  document.getElementById('app').style.left = value + 'px'
-}, shake)
+Ant({
+  x: 0
+}, {
+  x: 100
+}, 1000, props => {
+  document.getElementById('app').style.top = props.x + 'px'
+}, easeIn)

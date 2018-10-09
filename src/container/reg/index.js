@@ -1,11 +1,5 @@
-import Tpl from 'src/libs/tpl'
+import { getQuerys } from 'src/libs/reg'
+const url = 'http://baidu.com?name=zm&age=18&url=' + encodeURIComponent('http://baidu.com?name=zm&age=18')
 
-const data = {
-  name: 'zm',
-  age: 18,
-  sex: 'boy'
-}
-
-const tpl = document.getElementById('tpl').innerHTML.toString()
-const str = Tpl(tpl, data)
-document.getElementById('app').innerHTML = str
+const querys = getQuerys(url)
+console.log(querys)
