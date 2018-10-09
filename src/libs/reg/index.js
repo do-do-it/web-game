@@ -1,5 +1,5 @@
 function getQuerys(url = window.location.href) {
-  const reg = /([^?&]\w+)=([^&]*)/ig
+  const reg = /([^?&]\w+)=([^?&]*)/ig
   const querys = {}
   let matchs
   while( (matchs = reg.exec(url)) !== null) {
