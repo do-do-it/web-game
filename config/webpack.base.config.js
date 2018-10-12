@@ -15,6 +15,11 @@ const config = {
         test: /\.js$/,
         exclude: /node_modules/,
         use: 'babel-loader'
+      },
+      {
+        test: /\.(png|jpg|mp4|mp3)$/,
+        exclude: /node_modules/,
+        use: 'url-loader'
       }
     ]
   },
