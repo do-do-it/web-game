@@ -11,7 +11,7 @@ const entries = () => {
   const entries = {}
   pages.forEach(item => {
     const key = item + '/index'
-    entries[key] = path.resolve(__dirname, '../src/container/' + key)
+    entries[key] = [path.resolve(__dirname, '../src/container/' + key)]
   })
   return entries
 }
