@@ -1,13 +1,15 @@
 const path = require('path')
 const cleanwebpackplugin = require('clean-webpack-plugin')
-const toolkit = require('./toolkit')
+const entrys = require('./entrys')
+const env = require('./env')[process.env.NODE_ENV]
 
 const config = {
-  entry: toolkit.entries(),
+  mode: env.mode,
+  entry: entrys.entries(),
   output: {
     path: path.resolve(__dirname, '../dist'),
     filename: '[name].js',
-    publicPath: '/'
+    publicPath: env.publicPath
   },
   module: {
     rules: [
@@ -23,13 +25,7 @@ const config = {
       }
     ]
   },
-  plugins: [
-    new cleanwebpackplugin(['dist'], {
-      root: path.resolve(__dirname, '../'),
-      verbose: false,
-      dry: false
-    })
-  ].concat(toolkit.pages()),
+  plugins: entrys.pages(),
   resolve: {
     extensions: ['.js','.jsx', '.less'],
     alias: {

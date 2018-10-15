@@ -2,9 +2,9 @@ const webpack = require('webpack')
 const path = require('path')
 const baseConfig = require('./webpack.base.config')
 const merge = require('webpack-merge')
+const env = require('./env')[process.env.NODE_ENV]
 
 const config = merge(baseConfig, {
-  mode: 'development',
   module: {
     rules: [
       {
@@ -28,9 +28,9 @@ const config = merge(baseConfig, {
   ],
   devServer: {
     contentBase: path.resolve(__dirname, '../dist'),
-    port: 8001,
+    port: env.port,
     hot: true,
-    host: 'localhost'
+    host: env.ip
   }
 })
 
