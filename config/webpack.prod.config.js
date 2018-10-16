@@ -5,12 +5,11 @@ const merge = require('webpack-merge')
 const os = require('os')
 const cleanwebpackplugin = require('clean-webpack-plugin')
 const path = require('path')
-const env = require('./env')[process.env.NODE_ENV]
+const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin')
 
 const config = merge(baseConfig, {
   output: {
-    filename: '[name].[contenthash:8].js',
-    publicPath: env.publicPath
+    filename: '[name].[contenthash:8].js'
   },
   module: {
     rules: [
@@ -21,7 +20,10 @@ const config = merge(baseConfig, {
             loader: MiniCssExtractPlugin.loader
           },
           {
-            loader: 'css-loader'
+            loader: 'css-loader',
+            options: {
+              minimize: true
+            }
           },
           {
             loader: 'less-loader'
@@ -38,7 +40,15 @@ const config = merge(baseConfig, {
     }),
     new MiniCssExtractPlugin({
       filename: "[name].[contenthash:8].css",
-      chunkFilename: "[id].css"
+      chunkFilename: "[id].[contenthash:8].css"
+    }),
+    new OptimizeCssAssetsPlugin({
+      assetNameRegExp: /\.css$/g,
+      cssProcessor: require('cssnano'),
+      cssProcessorPluginOptions: {
+        preset: ['default', { discardComments: { removeAll: true } }],
+      },
+      canPrint: true
     }),
     new webpack.BannerPlugin({
       banner: `built by ${os.hostname()} at ${(new Date()).toLocaleString()}`

@@ -1,11 +1,11 @@
 const path = require('path')
-const cleanwebpackplugin = require('clean-webpack-plugin')
-const entrys = require('./entrys')
+const entry = require('./entry')
 const env = require('./env')[process.env.NODE_ENV]
 
 const config = {
   mode: env.mode,
-  entry: entrys.entries(),
+  entry: entry.entries(),
+  stats: 'errors-only',
   output: {
     path: path.resolve(__dirname, '../dist'),
     filename: '[name].js',
@@ -25,7 +25,7 @@ const config = {
       }
     ]
   },
-  plugins: entrys.pages(),
+  plugins: entry.pages(),
   resolve: {
     extensions: ['.js','.jsx', '.less'],
     alias: {
