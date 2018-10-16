@@ -7,6 +7,7 @@ module.exports = {
     ip,
     port,
     mode: 'development',
+    proxy: 'http://192.168.64.68:5555',
     publicPath: `http://${ip}:${port}`
   },
   prod: {
