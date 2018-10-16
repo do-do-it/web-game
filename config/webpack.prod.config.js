@@ -6,6 +6,8 @@ const os = require('os')
 const cleanwebpackplugin = require('clean-webpack-plugin')
 const path = require('path')
 const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin')
+const ProgressBarPlugin = require('progress-bar-webpack-plugin')
+const chalk = require('chalk');
 
 const config = merge(baseConfig, {
   output: {
@@ -20,10 +22,10 @@ const config = merge(baseConfig, {
             loader: MiniCssExtractPlugin.loader
           },
           {
-            loader: 'css-loader',
-            options: {
-              minimize: true
-            }
+            loader: 'css-loader'
+          },
+          {
+            loader: 'postcss-loader'
           },
           {
             loader: 'less-loader'
@@ -52,6 +54,12 @@ const config = merge(baseConfig, {
     }),
     new webpack.BannerPlugin({
       banner: `built by ${os.hostname()} at ${(new Date()).toLocaleString()}`
+    }),
+    new ProgressBarPlugin({
+      format: chalk.green('打包中 [:bar] :current/:total :percent :elapseds :msg'),
+      complete: '●',
+      incomplete: '○',
+      width: 20
     })
   ]
 })

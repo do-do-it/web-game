@@ -14,6 +14,7 @@ const app = new express()
 app.use(webpackDevMiddleware(compiler, {
   publicPath: webpackConfig.output.publicPath,
   lazy: false,
+  stats: 'errors-only',
   watchOptions: {
     aggregateTimeout: 300,
     ignored: /node_modules/,
