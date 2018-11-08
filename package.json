@@ -3,8 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "dev": "cross-env NODE_ENV=dev webpack-dev-server --config config/webpack.dev.config.js",
-    "server": "cross-env NODE_ENV=dev nodemon app.js",
+    "dev": "cross-env NODE_ENV=dev node app.js",
     "build": "cross-env NODE_ENV=prod webpack --config config/webpack.prod.config.js"
   },
   "repository": "git@github.com:do-do-it/learn-share.git",

@@ -19,7 +19,7 @@ class Home extends React.Component {
         },
         {
           id: 2,
-          name: '俄罗斯方块2',
+          name: '俄罗斯方块22',
           brief: '基于canvas实现',
           link: '/tetris2/'
         }
